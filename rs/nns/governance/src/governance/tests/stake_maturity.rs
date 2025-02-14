@@ -3,16 +3,14 @@ use crate::{
         tests::{MockEnvironment, StubCMC, StubIcpLedger},
         Governance,
     },
-    pb::v1::{
-        manage_neuron::StakeMaturity,
-        manage_neuron_response::{MergeMaturityResponse, StakeMaturityResponse},
-        neuron, Governance as GovernanceProto, Neuron,
-    },
+    pb::v1::{manage_neuron::StakeMaturity, neuron, Governance as GovernanceProto, Neuron},
 };
 use ic_base_types::PrincipalId;
 use ic_nns_common::pb::v1::NeuronId;
+use ic_nns_governance_api::pb::v1::manage_neuron_response::{
+    MergeMaturityResponse, StakeMaturityResponse,
+};
 use maplit::btreemap;
-use std::sync::{Arc, Mutex};
 
 #[test]
 fn test_stake_maturity() {
@@ -36,10 +34,7 @@ fn test_stake_maturity() {
             },
             ..GovernanceProto::default()
         },
-        Box::new(MockEnvironment {
-            expected_call_canister_method_calls: Arc::new(Mutex::new(Default::default())),
-            now: Arc::new(Mutex::new(0)),
-        }),
+        Box::new(MockEnvironment::new(vec![], 0)),
         Box::new(StubIcpLedger {}),
         Box::new(StubCMC {}),
     );
